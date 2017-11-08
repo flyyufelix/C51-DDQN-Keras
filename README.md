@@ -22,6 +22,18 @@ $ pip install vizdoom
 
 Second, clone [ViZDoom](https://github.com/mwydmuch/ViZDoom) to your machine, copy the python files provided in this repo over to `examples/python`.
 
+Next, edit `scenarios/defend_the_center.cfg` file. Replace this line 
+
+```
+available_game_variables = { AMMO2 HEALTH }
+```
+
+with
+
+```
+available_game_variables = { KILLCOUNT AMMO2 HEALTH }
+```
+
 To test if the environment is working, run
 
 ```
