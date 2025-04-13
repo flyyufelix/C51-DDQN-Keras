@@ -172,16 +172,16 @@ class C51Agent:
                 # Distribution collapses to a single point
                 Tz = min(self.v_max, max(self.v_min, reward[i]))
                 bj = (Tz - self.v_min) / self.delta_z 
-                m_l, m_u = math.floor(bj), math.ceil(bj)
+                m_l, m_u = math.floor(bj), math.floor(bj) + 1
                 m_prob[action[i]][i][int(m_l)] += (m_u - bj)
-                m_prob[action[i]][i][int(m_u)] += (bj - m_l)
+                m_prob[action[i]][i][min(int(m_u), self.num_atoms - 1)] += (bj - m_l)
             else:
                 for j in range(self.num_atoms):
                     Tz = min(self.v_max, max(self.v_min, reward[i] + self.gamma * self.z[j]))
                     bj = (Tz - self.v_min) / self.delta_z 
-                    m_l, m_u = math.floor(bj), math.ceil(bj)
+                    m_l, m_u = math.floor(bj), math.floor(bj) + 1
                     m_prob[action[i]][i][int(m_l)] += z_[optimal_action_idxs[i]][i][j] * (m_u - bj)
-                    m_prob[action[i]][i][int(m_u)] += z_[optimal_action_idxs[i]][i][j] * (bj - m_l)
+                    m_prob[action[i]][i][min(int(m_u), self.num_atoms - 1)] += z_[optimal_action_idxs[i]][i][j] * (bj - m_l)
 
         loss = self.model.fit(state_inputs, m_prob, batch_size=self.batch_size, nb_epoch=1, verbose=0)
 
